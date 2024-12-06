@@ -11,6 +11,21 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import firebase_admin
+from firebase_admin import credentials
+
+
+
+#caminho para o arquivo json 
+FIREBASE_CREDENTIALS = "/home/garcia_simao/Documentos/Projectos de trabalho/chave do firebase/carregar-regarcas-ende-firebase-adminsdk-p46tr-c9667e6da0.json"
+
+#inicializar o firebase admin sdk
+cred = credentials.Certificate(FIREBASE_CREDENTIALS)
+firebase_admin.initialize_app(cred)
+
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

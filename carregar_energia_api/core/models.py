@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from firebase_admin import firestore
 
 class Usuario(models.Model):
     nome = models.CharField(max_length=50)
@@ -21,4 +24,33 @@ class CarregarRecarga(models.Model):
     data_criacao = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.codigo_da_recarga
+        return f"Código de recarga : {self.codigo_da_recarga} - Usuário: {self.id_do_usuario.nome} "
+    
+
+@receiver(post_save, sender=CarregarRecarga)
+def enviar_para_firebase(sender, instance, created, **kwargs):
+    if created:
+        # Conectar ao Firestore
+        db = firestore.client()
+
+        # Formatar os dados
+        dados = {
+            "id": instance.id,
+            "id_do_usuario": instance.id_do_usuario.id,
+            "id_do_usuario_dados": {
+                "id": instance.id_do_usuario.id,
+                "nome": instance.id_do_usuario.nome,
+                "sobrenome": instance.id_do_usuario.sobrenome,
+                "telefone": instance.id_do_usuario.telefone,
+                "nif": instance.id_do_usuario.nif,
+                "email": instance.id_do_usuario.email,
+                "endereco": instance.id_do_usuario.endereco,
+                "numero_de_conta": instance.id_do_usuario.numero_de_conta,
+                "numero_do_contador": instance.id_do_usuario.numero_do_contador,
+            },
+            "codigo_da_recarga": instance.codigo_da_recarga,
+            "data_criacao": instance.data_criacao.isoformat(),
+        }
+
+        # Enviar os dados para o Firestore na coleção `CarregarRecarga`
+        db.collection("CarregarRecarga").document(str(instance.id)).set(dados)
