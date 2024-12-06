@@ -28,6 +28,7 @@ class CarregarRecarga(models.Model):
         return f"Código de recarga : {self.codigo_da_recarga} - Usuário: {self.id_do_usuario.nome} "
     
 
+#enviar registos para firebase
 @receiver(post_save, sender=CarregarRecarga)
 def enviar_para_firebase(sender, instance, created, **kwargs):
     if created:
