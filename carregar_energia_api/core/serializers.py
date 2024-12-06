@@ -13,7 +13,8 @@ class UsuarioSerializer(serializers.ModelSerializer):
                   'telefone', 
                   'nif', 
                   'email', 
-                  'endereco', 
+                  'endereco',
+                  'password', 
                   'numero_de_conta',
                   'numero_do_contador',
                   'data_criacao']

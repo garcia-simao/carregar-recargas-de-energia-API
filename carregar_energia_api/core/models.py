@@ -10,6 +10,7 @@ class Usuario(models.Model):
     nif = models.CharField(max_length=50)
     email = models.EmailField(max_length=50, unique=True)
     endereco = models.CharField(max_length=50)
+    password = models.CharField(max_length=50)
     numero_de_conta = models.IntegerField()
     numero_do_contador = models.IntegerField()
     data_criacao = models.DateTimeField(auto_now_add=True)
