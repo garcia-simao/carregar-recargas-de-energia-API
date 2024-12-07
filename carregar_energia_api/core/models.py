@@ -28,6 +28,17 @@ class CarregarRecarga(models.Model):
         return f"Código de recarga : {self.codigo_da_recarga} - Usuário: {self.id_do_usuario.nome} "
     
 
+class InformacoesCliente(models.Model):
+    id_do_usuario = models.ForeignKey(Usuario, on_delete = models.CASCADE)
+    status_debito_directo = models.BooleanField()
+    iban = models.CharField(max_length=40)
+    limite_de_carregamento_mensal = models.IntegerField()
+    data_criacao = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Iban : {self.iban} - Usuário: {self.id_do_usuario.nome} "
+
+
 #enviar registos para firebase
 @receiver(post_save, sender=CarregarRecarga)
 def enviar_para_firebase(sender, instance, created, **kwargs):

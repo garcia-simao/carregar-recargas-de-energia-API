@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Usuario
 from .models import CarregarRecarga
+from .models import InformacoesCliente
 
 
 
@@ -45,3 +46,14 @@ class CarregarRecargaSerializer(serializers.ModelSerializer):
             'numero_de_conta': obj.id_do_usuario.numero_de_conta,
             'numero_do_contador': obj.id_do_usuario.numero_do_contador,
         }
+    
+
+class InformacoesClienteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InformacoesCliente
+        fields = ['id', 
+                  'id_do_usuario', 
+                  'status_debito_directo',
+                  'iban',
+                  'limite_de_carregamento_mensal', 
+                  'data_criacao']
